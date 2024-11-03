@@ -11,7 +11,7 @@ interface UserProfile {
     user_id: any;
 }
 
-export async function createUserProfile(userData: UserProfile) {
+export const createUserProfile = async (userData: UserProfile) => {
   const { error, data } = await supabase.from('Profile').insert(userData);
   if (error) {
     throw error;

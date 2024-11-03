@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createUnit, deleteUnitById, fetchUnitById, fetchUnitsPaginated, updateUnitById, } from '@/services/unit.service';
 
-export async function addUnit(req: Request, res: Response) {
+export const addUnit = async (req: Request, res: Response) => {
   const { title } = req.body;
   try {
     const unit = await createUnit(title);
@@ -11,7 +11,7 @@ export async function addUnit(req: Request, res: Response) {
   }
 }
 
-export async function getUnits(req: Request, res: Response) {
+export const getUnits = async (req: Request, res: Response) => {
   const { start, limit } = req.query;
   try {
     const courses = await fetchUnitsPaginated(Number(start), Number(limit));
@@ -21,7 +21,7 @@ export async function getUnits(req: Request, res: Response) {
   }
 }
 
-export async function getUnitById(req: Request, res: Response) {
+export const getUnitById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const course = await fetchUnitById(id);
@@ -31,7 +31,7 @@ export async function getUnitById(req: Request, res: Response) {
     }
 }
 
-export async function updateUnit(req: Request, res: Response) {
+export const updateUnit = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title } = req.body;
     try {
@@ -42,7 +42,7 @@ export async function updateUnit(req: Request, res: Response) {
     }
 }
 
-export async function deleteUnit(req: Request, res: Response) {
+export const deleteUnit = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         await deleteUnitById(id);

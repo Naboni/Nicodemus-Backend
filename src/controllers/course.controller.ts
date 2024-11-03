@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createCourse, deleteCourseById, fetchCourseById, fetchCoursesPaginated, updateCourseById, } from '@/services/course.service';
 
-export async function addCourse(req: Request, res: Response) {
+export const addCourse = async (req: Request, res: Response) => {
   const { title } = req.body;
   try {
     const unit = await createCourse(title);
@@ -11,7 +11,7 @@ export async function addCourse(req: Request, res: Response) {
   }
 }
 
-export async function getCourses(req: Request, res: Response) {
+export const getCourses = async (req: Request, res: Response) => {
   const { start, limit } = req.query;
   try {
     const courses = await fetchCoursesPaginated(Number(start), Number(limit));
@@ -21,7 +21,7 @@ export async function getCourses(req: Request, res: Response) {
   }
 }
 
-export async function getCourseById(req: Request, res: Response) {
+export const getCourseById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const course = await fetchCourseById(id);
@@ -31,7 +31,7 @@ export async function getCourseById(req: Request, res: Response) {
     }
 }
 
-export async function updateCourse(req: Request, res: Response) {
+export const updateCourse = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title } = req.body;
     try {
@@ -42,7 +42,7 @@ export async function updateCourse(req: Request, res: Response) {
     }
 }
 
-export async function deleteCourse(req: Request, res: Response) {
+export const deleteCourse = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         await deleteCourseById(id);
