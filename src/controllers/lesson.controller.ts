@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createLesson, deleteLessonById, fetchLessonById, fetchLessonsPaginated, updateLessonById, } from '@/services/lesson.service';
+import { createLesson, createUserLesson, deleteLessonById, fetchLessonById, fetchLessonsPaginated, updateLessonById, } from '@/services/lesson.service';
 
 export const addLesson = async (req: Request, res: Response) => {
   const { title } = req.body;
@@ -50,4 +50,16 @@ export const deleteLesson = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({ error: error.message });
     }
+}
+
+// many to many relationship with user
+
+export const addLessonToUser = async (req: Request, res: Response) => {
+  const { lessonId, userId } = req.body;
+  try {
+    const lesson = await createUserLesson(lessonId, userId);
+    res.status(201).json(lesson);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
 }

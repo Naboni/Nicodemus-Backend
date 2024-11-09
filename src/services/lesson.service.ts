@@ -42,3 +42,16 @@ export const deleteLessonById = async (id: string) => {
   }
   return;
 }
+
+// many to many relationship with user
+
+export const createUserLesson = async (lessonId: string, userId: string) => {
+  const { error, data } = await supabase.from("UserLesson").insert({
+    lesson_id: lessonId,
+    user_id: userId
+  });
+  if (error) {
+    throw error;
+  }
+  return data;
+}
