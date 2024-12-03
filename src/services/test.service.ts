@@ -58,10 +58,18 @@ export const updateTestById = async (id: string, title: string) => {
     return data;
   }
   
-  export const deleteTestById = async (id: string) => {
-    const { error } = await supabase.from("Test").delete().eq("id", id);
-    if (error) {
-      throw error;
-    }
-    return;
+export const deleteTestById = async (id: string) => {
+  const { error } = await supabase.from("Test").delete().eq("id", id);
+  if (error) {
+    throw error;
   }
+  return;
+}
+
+export const checkIfTestAnswerIsCorrect = async (id: string, answer: string) => {
+  const { data, error } = await supabase.from("Test").select("answer").eq("id", id);
+  if (error) {
+      throw error;
+  }
+  return data[0].answer === answer;
+}

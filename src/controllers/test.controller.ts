@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createTest, deleteTestById, fetchTestById, fetchTestsByCourseId, fetchTestsByLessonId, fetchTestsByUnitId, updateTestById, } from '@/services/test.service';
+import { checkIfTestAnswerIsCorrect, createTest, deleteTestById, fetchTestById, fetchTestsByCourseId, fetchTestsByLessonId, fetchTestsByUnitId, updateTestById, } from '@/services/test.service';
 
 export const addTest = async (req: Request, res: Response) => {
   const { title } = req.body;
@@ -67,6 +67,16 @@ export const deleteTest = async (req: Request, res: Response) => {
     try {
         await deleteTestById(id);
         res.status(204).send();
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const checkAnswer = async (req: Request, res: Response) => {
+    const { id, answer } = req.body;
+    try {
+        const course = await checkIfTestAnswerIsCorrect(id, answer);
+        res.status(200).json(course);
     } catch (error: any) {
         res.status(400).json({ error: error.message });
     }

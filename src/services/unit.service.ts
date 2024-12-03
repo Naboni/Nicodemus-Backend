@@ -1,4 +1,5 @@
 import supabase from "@/config/supabaseClient";
+import { checkIfRecordExists } from "@/utils/check-if-records-exist";
 
 export const createUnit = async (title: string) => {
   const { error, data } = await supabase.from("Unit").insert({
@@ -46,6 +47,15 @@ export const deleteUnitById = async (id: string) => {
 // many to many relationship with user
 
 export const createUserUnit = async (unitId: string, userId: string) => {
+  const existingRecord = await checkIfRecordExists('UserUnit', {
+    unit_id: unitId,
+    user_id: userId
+  });
+
+  if (existingRecord) {
+    return { message: 'Record already exists', data: existingRecord };
+  }
+
   const { error, data } = await supabase.from("UserUnit").insert({
     unit_id: unitId,
     user_id: userId

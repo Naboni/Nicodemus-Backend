@@ -1,4 +1,5 @@
 import supabase from "@/config/supabaseClient";
+import { checkIfRecordExists } from "@/utils/check-if-records-exist";
 interface UserProfile {
     user_name: string;
     full_name?: string;
@@ -41,4 +42,46 @@ export const deleteUserProfile = async (id: string) => {
     throw error;
   }
   return;
+}
+
+export const addXP = async (id: string, xp: number) => {
+  const { error, data } = await supabase.from('Profile').update({ xp }).eq('id', id);
+  if (error) {
+    throw error;
+  }
+  return data;
+}
+
+export const createTestProfile = async (profileId: string, testId: string) => {
+
+  const existingRecord = await checkIfRecordExists('UserTest', {
+    user_id: profileId,
+    test_id: testId,
+  });
+
+  if (existingRecord) {
+    return { message: 'Record already exists', data: existingRecord };
+  }
+
+  const { error, data } = await supabase.from('UserTest').insert({
+    user_id: profileId,
+    test_id: testId
+  }).select("*");
+
+  if (error) {
+    throw error;
+  }
+  return data;
+}
+
+export const fetchTestsAlreadyTaken = async (profileId: string) => {
+  const { data, error } = await supabase
+    .from('UserTest')
+    .select('test_id')
+    .eq('user_id', profileId);
+
+  if (error) {
+    throw error;
+  }
+  return data;
 }

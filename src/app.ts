@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from 'dotenv';
 import morgan from "morgan";
 import helmet from 'helmet';
@@ -14,6 +15,7 @@ dotenv.config();
 const app: Application = express();
 app.use(errorHandler);
 app.use(express.json());
+app.use(cors())
 app.use(
   morgan("dev", {
     stream: accessLogStream,

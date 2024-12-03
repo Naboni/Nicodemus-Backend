@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUserProfile, getUserProfile, updateUserProfile, deleteUserProfile } from '@/services/profile.service';
+import { createUserProfile, getUserProfile, updateUserProfile, deleteUserProfile, addXP, createTestProfile } from '@/services/profile.service';
 
 export const addProfile = async (req: Request, res: Response) => {
   const { title } = req.body;
@@ -40,4 +40,24 @@ export const deleteProfile = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({ error: error.message });
     }
+}
+
+export const incrementXP = async (req: Request, res: Response) => {
+    const { id, xp } = req.body;
+    try {
+        await addXP(id, xp);
+        res.status(204).send();
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const addTestToProfile = async (req: Request, res: Response) => {
+  const { profileId, testId } = req.body;
+  try {
+    const unit = await createTestProfile(profileId, testId);
+    res.status(201).json(unit);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
 }
